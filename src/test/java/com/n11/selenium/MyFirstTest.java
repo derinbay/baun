@@ -17,6 +17,6 @@ public class MyFirstTest extends BaseTest {
                 .login("seleniummallfront90@mailcatch.com", "N11passw0rd");
         assertTrue(homePage.isLoggedIn());
 
-        homePage.search("telefon");
+        homePage.search("samsung");
     }
 }
