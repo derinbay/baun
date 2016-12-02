@@ -3,6 +3,7 @@ package com.n11.selenium.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -63,5 +64,12 @@ public class BasePage {
         PageFactory.initElements(driver, this);
         String userName = username.getText();
         return userName.equals("UAT BUYER DONTUSETHISBUYER");
+    }
+
+    public FavoritesPage goToFavorites() {
+        Actions actions = new Actions(driver);
+        actions.moveToElement(driver.findElement(By.xpath("//*[@title='Hesabım']"))).perform();
+        driver.findElement(By.xpath("//*[@title='Favorilerim']")).click();
+        return new FavoritesPage(driver);
     }
 }
