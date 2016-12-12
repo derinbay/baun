@@ -1,5 +1,6 @@
 package com.n11.selenium.pages;
 
+import com.n11.selenium.objects.Buyer;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,11 +25,12 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
-    public HomePage login(String username, String password) {
+    public HomePage login(Buyer buyer) {
         initElements(driver, this);
-        emailTextBox.sendKeys(username);
-        passwordTextBox.sendKeys(password);
-        loginButton.click();
+        typeTo(emailTextBox, buyer.getEmail());
+        typeTo(passwordTextBox, buyer.getPassword());
+        clickTo(loginButton);
+
         return new HomePage(driver);
     }
 }

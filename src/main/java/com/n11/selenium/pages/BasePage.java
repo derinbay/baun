@@ -1,5 +1,6 @@
 package com.n11.selenium.pages;
 
+import com.n11.selenium.objects.Buyer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +15,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class BasePage {
 
+    WebDriver driver;
+
     @FindBy(className = "btnSignIn")
     private WebElement signInButton;
 
@@ -25,8 +28,6 @@ public class BasePage {
 
     @FindBy(className = "username")
     private WebElement username;
-
-    WebDriver driver;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -43,14 +44,19 @@ public class BasePage {
         element.click();
     }
 
-    private void waitObject(By by) {
+    public void waitObject(By by) {
         WebDriverWait wait = new WebDriverWait(driver, 15);
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
-    private void waitObject(WebElement element) {
+    public void waitObject(WebElement element) {
         WebDriverWait wait = new WebDriverWait(driver, 15);
         wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void typeTo(WebElement element, String keyword) {
+        waitObject(element);
+        element.sendKeys(keyword);
     }
 
     public SearchResultPage search(String keyword) {
@@ -60,10 +66,10 @@ public class BasePage {
         return new SearchResultPage(driver);
     }
 
-    public boolean isLoggedIn() {
+    public boolean isLoggedIn(Buyer buyer) {
         PageFactory.initElements(driver, this);
-        String userName = username.getText();
-        return userName.equals("UAT BUYER DONTUSETHISBUYER");
+        String userNameOnPage = username.getText();
+        return userNameOnPage.equals(buyer.getName());
     }
 
     public FavoritesPage goToFavorites() {

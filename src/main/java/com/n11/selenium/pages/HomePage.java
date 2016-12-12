@@ -1,5 +1,6 @@
 package com.n11.selenium.pages;
-
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -9,5 +10,24 @@ public class HomePage extends BasePage {
 
     public HomePage(WebDriver driver) {
         super(driver);
+    }
+
+    public FavoritesPage clearMyFavorites() {
+        FavoritesPage favoritesPage = goToFavorites();
+
+        if (!isElementPresent(By.className("emptyWatchList"))) {
+            driver.findElement(By.id("allItemsSelected")).click();
+            driver.findElement(By.id("removeSelectedProducts")).click();
+        }
+        return favoritesPage;
+    }
+
+    public boolean isElementPresent(By by) {
+        try {
+            driver.findElement(by);
+            return true;
+        } catch (NoSuchElementException ex) {
+            return false;
+        }
     }
 }

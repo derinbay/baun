@@ -1,5 +1,7 @@
 package com.n11.selenium;
 
+import com.n11.selenium.objects.Buyer;
+import com.n11.selenium.objects.BuyerPool;
 import com.n11.selenium.pages.FavoritesPage;
 import com.n11.selenium.pages.HomePage;
 import com.n11.selenium.pages.SearchResultPage;
@@ -14,25 +16,28 @@ public class MyFirstTest extends BaseTest {
 
     @Test
     public void shouldLogin() {
+        Buyer buyer = BuyerPool.buyerForLoginTest();
         HomePage homePage = new HomePage(driver)
                 .callLoginPage()
-                .login("seleniummallfront90@mailcatch.com", "N11passw0rd");
-        assertTrue(homePage.isLoggedIn());
+                .login(buyer);
+        assertTrue(homePage.isLoggedIn(buyer));
 
         homePage.search("samsung");
     }
 
     @Test
     public void shouldAddToFavorites() {
-        SearchResultPage resultPage = new HomePage(driver)
+        Buyer buyer = BuyerPool.buyerForFavoritesTest();
+        HomePage homePage = new HomePage(driver)
                 .callLoginPage()
-                .login("seleniummallfront90@mailcatch.com", "N11passw0rd")
-                .search("kalem");
+                .login(buyer);
+
+        FavoritesPage favoritesPage = homePage.clearMyFavorites();
+        SearchResultPage resultPage = favoritesPage.search("kalem");
 
         String productName = resultPage.addToFavorites(1);
-        resultPage.goToFavorites();
 
-        FavoritesPage favoritesPage = new FavoritesPage(driver);
+        favoritesPage = resultPage.goToFavorites();
         assertTrue(productName.equals(favoritesPage.getProductName()));
     }
 }
