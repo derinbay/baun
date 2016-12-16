@@ -2,6 +2,7 @@ package com.n11.selenium.pages;
 
 import com.n11.selenium.objects.Buyer;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -77,5 +78,15 @@ public class BasePage {
         actions.moveToElement(driver.findElement(By.xpath("//*[@title='Hesabım']"))).perform();
         driver.findElement(By.xpath("//*[@title='Favorilerim']")).click();
         return new FavoritesPage(driver);
+    }
+
+    public boolean isElementPresent(By by) {
+        try {
+            driver.findElement(by);
+            return true;
+        } catch (NoSuchElementException ex) {
+            System.out.println(ex);
+            return false;
+        }
     }
 }

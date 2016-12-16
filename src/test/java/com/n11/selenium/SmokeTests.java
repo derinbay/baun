@@ -2,9 +2,7 @@ package com.n11.selenium;
 
 import com.n11.selenium.objects.Buyer;
 import com.n11.selenium.objects.BuyerPool;
-import com.n11.selenium.pages.FavoritesPage;
-import com.n11.selenium.pages.HomePage;
-import com.n11.selenium.pages.SearchResultPage;
+import com.n11.selenium.pages.*;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -12,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by taylan.derinbay on 25.11.2016.
  */
-public class MyFirstTest extends BaseTest {
+public class SmokeTests extends BaseTest {
 
     @Test
     public void shouldLogin() {
@@ -39,5 +37,24 @@ public class MyFirstTest extends BaseTest {
 
         favoritesPage = resultPage.goToFavorites();
         assertTrue(productName.equals(favoritesPage.getProductName()));
+    }
+
+    @Test
+    public void shouldSeeWarningsOnPaymentPage() {
+        Buyer buyer = BuyerPool.buyerForLoginTest();
+        SearchResultPage searchResultPage = new HomePage(driver)
+                .callLoginPage()
+                .login(buyer)
+                .search("Casio MTP-1374D-7AVDF");
+
+        ProductPage productPage = searchResultPage.clickProduct(1);
+        PaymentConfirmationPage paymentConfirmationPage = productPage.instantPay();
+        paymentConfirmationPage.acceptAgreement();
+        paymentConfirmationPage.purchase();
+
+        assertTrue("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("cardNumber"));
+        assertTrue("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("holderName"));
+        assertTrue("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("expireMonth"));
+        assertTrue("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("securityCode"));
     }
 }
