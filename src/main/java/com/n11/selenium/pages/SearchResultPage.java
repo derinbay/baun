@@ -16,15 +16,14 @@ public class SearchResultPage extends BasePage {
     }
 
     public String addToFavorites(int productRow) {
-        driver.findElement(By.xpath("//*[@id='view']//li[" + productRow + "]//*[@title='Favorilere ekle']")).click();
-        String productName = driver.findElement(By.xpath("//*[@id='view']//li[" + productRow + "]//h3[contains(@class, 'productName')]")).getText();
+        clickTo(By.xpath("//*[@id='view']//li[" + productRow + "]//*[@title='Favorilere ekle']"));
 
-        return productName;
+        return getText(By.xpath("//*[@id='view']//li[" + productRow + "]//h3[contains(@class, 'productName')]"));
     }
 
     public ProductPage clickProduct(int productRow) {
         List<WebElement> productList = driver.findElements(By.xpath("//*[@id='view']//li[@itemprop='itemListElement']"));
-        productList.get(productRow - 1).findElement(By.xpath(".//a")).click();
+        clickTo(productList.get(productRow - 1).findElement(By.xpath(".//a")));
 
         return new ProductPage(driver);
     }

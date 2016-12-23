@@ -5,8 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import static org.openqa.selenium.support.PageFactory.initElements;
-
 /**
  * Created by Taylan on 16/12/2016.
  */
@@ -23,15 +21,11 @@ public class PaymentConfirmationPage extends BasePage {
     }
 
     public void acceptAgreement() {
-        initElements(driver, this);
-        waitObject(acceptAgreement);
-        acceptAgreement.click();
+        clickTo(acceptAgreement);
     }
 
     public void purchase() {
-        initElements(driver, this);
-        waitObject(purchaseButton);
-        purchaseButton.click();
+        clickTo(purchaseButton);
     }
 
     public boolean isWarningDisplayedFor(String field) {

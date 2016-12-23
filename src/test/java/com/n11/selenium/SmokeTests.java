@@ -14,34 +14,32 @@ public class SmokeTests extends BaseTest {
 
     @Test
     public void shouldLogin() {
-        Buyer buyer = BuyerPool.buyerForLoginTest();
+        Buyer buyer = BuyerPool.buyerForLoginTest(driver);
         HomePage homePage = new HomePage(driver)
                 .callLoginPage()
                 .login(buyer);
         assertTrue(homePage.isLoggedIn(buyer));
-
-        homePage.search("samsung");
     }
 
     @Test
     public void shouldAddToFavorites() {
-        Buyer buyer = BuyerPool.buyerForFavoritesTest();
-        HomePage homePage = new HomePage(driver)
+        Buyer buyer = BuyerPool.buyerForFavoritesTest(driver);
+        new HomePage(driver)
                 .callLoginPage()
                 .login(buyer);
 
-        FavoritesPage favoritesPage = homePage.clearMyFavorites();
+        FavoritesPage favoritesPage = buyer.clearMyFavorites();
         SearchResultPage resultPage = favoritesPage.search("kalem");
 
         String productName = resultPage.addToFavorites(1);
 
-        favoritesPage = resultPage.goToFavorites();
+        favoritesPage = buyer.goToFavorites();
         assertTrue(productName.equals(favoritesPage.getProductName()));
     }
 
     @Test
     public void shouldSeeWarningsOnPaymentPage() {
-        Buyer buyer = BuyerPool.buyerForLoginTest();
+        Buyer buyer = BuyerPool.buyerForLoginTest(driver);
         SearchResultPage searchResultPage = new HomePage(driver)
                 .callLoginPage()
                 .login(buyer)

@@ -13,6 +13,6 @@ public class FavoritesPage extends BasePage {
     }
 
     public String getProductName() {
-        return driver.findElement(By.xpath("//*[@id='watchList']//tbody/tr/td[@class='productTitle']//a")).getText();
+        return getText(By.xpath("//*[@id='watchList']//tbody/tr/td[@class='productTitle']//a"));
     }
 }

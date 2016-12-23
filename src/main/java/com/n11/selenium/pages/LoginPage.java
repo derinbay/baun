@@ -5,8 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import static org.openqa.selenium.support.PageFactory.initElements;
-
 /**
  * Created by taylan.derinbay on 25.11.2016.
  */
@@ -26,7 +24,6 @@ public class LoginPage extends BasePage {
     }
 
     public HomePage login(Buyer buyer) {
-        initElements(driver, this);
         typeTo(emailTextBox, buyer.getEmail());
         typeTo(passwordTextBox, buyer.getPassword());
         clickTo(loginButton);
