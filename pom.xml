@@ -7,6 +7,22 @@
     <groupId>com.n11.test</groupId>
     <artifactId>baun</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.6.0</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -25,5 +41,4 @@
             <version>1.3</version>
         </dependency>
     </dependencies>
-
 </project>
