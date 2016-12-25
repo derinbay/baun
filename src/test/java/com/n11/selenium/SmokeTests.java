@@ -1,11 +1,14 @@
 package com.n11.selenium;
 
 import com.n11.selenium.objects.Buyer;
-import com.n11.selenium.objects.BuyerPool;
-import com.n11.selenium.pages.*;
+import com.n11.selenium.pages.FavoritesPage;
+import com.n11.selenium.pages.HomePage;
+import com.n11.selenium.pages.PaymentConfirmationPage;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static com.n11.selenium.objects.BuyerPool.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
  * Created by taylan.derinbay on 25.11.2016.
@@ -14,45 +17,55 @@ public class SmokeTests extends BaseTest {
 
     @Test
     public void shouldLogin() {
-        Buyer buyer = BuyerPool.buyerForLoginTest(driver);
+        Buyer buyer = buyerForLoginTest(driver);
         HomePage homePage = new HomePage(driver)
                 .callLoginPage()
                 .login(buyer);
-        assertTrue(homePage.isLoggedIn(buyer));
+
+        assertThat("Buyer is not logged in!", homePage.isLoggedIn(buyer));
+    }
+
+    @Test
+    public void shouldNotLogin() {
+        Buyer buyer = buyerForInvalidLoginTest(driver);
+        HomePage homePage = new HomePage(driver)
+                .callLoginPage()
+                .login(buyer);
+
+        assertThat("Buyer is logged in!", !homePage.isLoggedIn(buyer));
     }
 
     @Test
     public void shouldAddToFavorites() {
-        Buyer buyer = BuyerPool.buyerForFavoritesTest(driver);
+        Buyer buyer = buyerForFavoritesTest(driver);
         new HomePage(driver)
                 .callLoginPage()
                 .login(buyer);
 
-        FavoritesPage favoritesPage = buyer.clearMyFavorites();
-        SearchResultPage resultPage = favoritesPage.search("kalem");
+        buyer.clearMyFavorites();
+        String productName = buyer.search("kalem")
+                .addToFavorites(1);
 
-        String productName = resultPage.addToFavorites(1);
-
-        favoritesPage = buyer.goToFavorites();
-        assertTrue(productName.equals(favoritesPage.getProductName()));
+        FavoritesPage favoritesPage = buyer.goToFavorites();
+        assertThat(productName, equalTo(favoritesPage.getProductName(1)));
     }
 
     @Test
     public void shouldSeeWarningsOnPaymentPage() {
-        Buyer buyer = BuyerPool.buyerForLoginTest(driver);
-        SearchResultPage searchResultPage = new HomePage(driver)
+        Buyer buyer = buyerForLoginTest(driver);
+        new HomePage(driver)
                 .callLoginPage()
                 .login(buyer)
-                .search("Casio MTP-1374D-7AVDF");
+                .search("Casio MTP-1374D-7AVDF")
+                .clickProduct(1)
+                .instantPay()
+                .acceptAgreement()
+                .purchase();
 
-        ProductPage productPage = searchResultPage.clickProduct(1);
-        PaymentConfirmationPage paymentConfirmationPage = productPage.instantPay();
-        paymentConfirmationPage.acceptAgreement();
-        paymentConfirmationPage.purchase();
-
-        assertTrue("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("cardNumber"));
-        assertTrue("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("holderName"));
-        assertTrue("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("expireMonth"));
-        assertTrue("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("securityCode"));
+        PaymentConfirmationPage paymentConfirmationPage = new PaymentConfirmationPage(driver);
+        assertThat("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("cardNumber"));
+        assertThat("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("holderName"));
+        assertThat("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("expireMonth"));
+        assertThat("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("securityCode"));
     }
 }

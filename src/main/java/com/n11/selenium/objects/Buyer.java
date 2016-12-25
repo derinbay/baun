@@ -1,11 +1,9 @@
 package com.n11.selenium.objects;
 
+import com.n11.selenium.pages.BasePage;
 import com.n11.selenium.pages.FavoritesPage;
-import com.n11.selenium.pages.HomePage;
 import com.n11.selenium.pages.SearchResultPage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Actions;
 
 /**
  * Created by Taylan on 09/12/2016.
@@ -49,26 +47,27 @@ public class Buyer {
     }
 
     public FavoritesPage goToFavorites() {
-        Actions actions = new Actions(driver);
-        actions.moveToElement(driver.findElement(By.xpath("//*[@title='Hesabım']"))).perform();
-        driver.findElement(By.xpath("//*[@title='Favorilerim']")).click();
+        new BasePage(driver)
+                .openMyAccountMenu()
+                .clickToMyPageOf("myFavorites");
+
         return new FavoritesPage(driver);
     }
 
     public FavoritesPage clearMyFavorites() {
-        FavoritesPage favoritesPage = goToFavorites();
-
-        if (!favoritesPage.isElementPresent(By.className("emptyWatchList"))) {
-            driver.findElement(By.id("allItemsSelected")).click();
-            driver.findElement(By.id("removeSelectedProducts")).click();
-        }
-        return favoritesPage;
+        return goToFavorites()
+                .clearMyFavorites();
     }
 
     public String addToFavoritesFromSearchResults(String keyword, int productRow) {
-        HomePage homePage = new HomePage(driver);
-        SearchResultPage searchResultPage = homePage.search(keyword);
-        return searchResultPage.addToFavorites(productRow);
+        return new BasePage(driver)
+                .search(keyword)
+                .addToFavorites(productRow);
+    }
+
+    public SearchResultPage search(String keyword) {
+        return new BasePage(driver)
+                .search(keyword);
     }
 }
 

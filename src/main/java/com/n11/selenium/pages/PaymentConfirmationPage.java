@@ -20,8 +20,9 @@ public class PaymentConfirmationPage extends BasePage {
         super(driver);
     }
 
-    public void acceptAgreement() {
+    public PaymentConfirmationPage acceptAgreement() {
         clickTo(acceptAgreement);
+        return this;
     }
 
     public void purchase() {

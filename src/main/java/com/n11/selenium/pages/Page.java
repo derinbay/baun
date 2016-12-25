@@ -4,11 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Set;
 
+import static com.n11.selenium.objects.Config.WAITTIME_ELEMENTOCCURENCE;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
 /**
@@ -29,13 +31,7 @@ public abstract class Page {
     }
 
     public void clickTo(By by) {
-        waitObject(by);
-        driver.findElement(by).click();
-    }
-
-    public String getText(By by) {
-        waitObject(by);
-        return driver.findElement(by).getText();
+        clickTo(driver.findElement(by));
     }
 
     public String getText(WebElement element) {
@@ -43,12 +39,12 @@ public abstract class Page {
         return element.getText();
     }
 
-    public String getCurrentUrl() {
-        return driver.getCurrentUrl();
+    public String getText(By by) {
+        return getText(driver.findElement(by));
     }
 
-    public void maximizeWindow() {
-        driver.manage().window().maximize();
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
     }
 
     public int getSizeOfWindows() {
@@ -74,14 +70,24 @@ public abstract class Page {
         }
     }
 
-    public void waitObject(By by) {
-        WebDriverWait wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+    public void waitObject(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, WAITTIME_ELEMENTOCCURENCE);
+        wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    public void waitObject(WebElement element) {
+    public void waitObject(By by) {
+        waitObject(driver.findElement(by));
+    }
+
+    public boolean waitObjectSafely (WebElement element) {
         WebDriverWait wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(element));
+        try {
+            wait.until(ExpectedConditions.visibilityOf(element));
+            return true;
+        } catch (Exception ex) {
+            System.out.println("Element was not visible on page!");
+            return false;
+        }
     }
 
     public void typeTo(WebElement element, String keyword) {
@@ -89,16 +95,29 @@ public abstract class Page {
         element.sendKeys(keyword);
     }
 
-    public boolean isElementPresent(By by) {
-        return !driver.findElements(by).isEmpty();
+    public void typeTo(By by, String keyword) {
+        typeTo(driver.findElement(by), keyword);
     }
 
     public boolean isElementPresent(WebElement element) {
         try {
             return element.isDisplayed();
         } catch (NoSuchElementException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("WebElement is not displaying!");
             return false;
         }
+    }
+
+    public boolean isElementPresent(By by) {
+        return !driver.findElements(by).isEmpty();
+    }
+
+    public void moveTo(WebElement element) {
+        Actions actions = new Actions(driver);
+        actions.moveToElement(element).perform();
+    }
+
+    public void moveTo(By by) {
+        moveTo(driver.findElement(by));
     }
 }

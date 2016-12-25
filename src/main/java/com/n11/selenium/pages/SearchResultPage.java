@@ -17,7 +17,6 @@ public class SearchResultPage extends BasePage {
 
     public String addToFavorites(int productRow) {
         clickTo(By.xpath("//*[@id='view']//li[" + productRow + "]//*[@title='Favorilere ekle']"));
-
         return getText(By.xpath("//*[@id='view']//li[" + productRow + "]//h3[contains(@class, 'productName')]"));
     }
 
