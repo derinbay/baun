@@ -1,16 +1,17 @@
 package com.n11.selenium.pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Set;
 
-import static com.n11.selenium.objects.Config.WAITTIME_ELEMENTOCCURENCE;
+import static com.n11.selenium.objects.Config.*;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
 /**
@@ -25,9 +26,16 @@ public abstract class Page {
         initElements(driver, this);
     }
 
+    public void waitForAjax() {
+        ExpectedCondition<Boolean> pageLoadCondition = driver -> "complete".equals(((JavascriptExecutor) driver).executeScript("return document.readyState"));
+        WebDriverWait wait = new WebDriverWait(driver, WAITTIME_TIMEOUT);
+        wait.until(pageLoadCondition);
+    }
+
     public void clickTo(WebElement element) {
         waitObject(element);
         element.click();
+        waitForAjax();
     }
 
     public void clickTo(By by) {
@@ -70,19 +78,38 @@ public abstract class Page {
         }
     }
 
-    public void waitObject(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(driver, WAITTIME_ELEMENTOCCURENCE);
+    public void waitObject(WebElement element, int timeOutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
         wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void waitObject(By by, int timeOutInSeconds) {
+        waitObject(driver.findElement(by), timeOutInSeconds);
+    }
+
+    public void waitObject(WebElement element) {
+        waitObject(element, WAITTIME_ELEMENTOCCURENCE);
     }
 
     public void waitObject(By by) {
         waitObject(driver.findElement(by));
     }
 
-    public boolean waitObjectSafely (WebElement element) {
-        WebDriverWait wait = new WebDriverWait(driver, 15);
+    public boolean waitObjectSafely (WebElement element, int timeOutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
         try {
             wait.until(ExpectedConditions.visibilityOf(element));
+            return true;
+        } catch (Exception ex) {
+            System.out.println("Element was not visible on page!");
+            return false;
+        }
+    }
+
+    public boolean waitObjectSafely (By by, int timeOutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(by));
             return true;
         } catch (Exception ex) {
             System.out.println("Element was not visible on page!");
@@ -93,6 +120,7 @@ public abstract class Page {
     public void typeTo(WebElement element, String keyword) {
         waitObject(element);
         element.sendKeys(keyword);
+        waitForAjax();
     }
 
     public void typeTo(By by, String keyword) {
@@ -100,21 +128,17 @@ public abstract class Page {
     }
 
     public boolean isElementPresent(WebElement element) {
-        try {
-            return element.isDisplayed();
-        } catch (NoSuchElementException ex) {
-            System.out.println("WebElement is not displaying!");
-            return false;
-        }
+        return waitObjectSafely(element, WAITTIME_SMALL);
     }
 
     public boolean isElementPresent(By by) {
-        return !driver.findElements(by).isEmpty();
+        return waitObjectSafely(by, WAITTIME_SMALL);
     }
 
     public void moveTo(WebElement element) {
         Actions actions = new Actions(driver);
         actions.moveToElement(element).perform();
+        waitForAjax();
     }
 
     public void moveTo(By by) {
