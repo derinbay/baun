@@ -13,7 +13,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 /**
  * Created by taylan.derinbay on 25.11.2016.
  */
-public class SmokeTests extends BaseTest {
+public class SmokeTest extends BaseTest {
 
     @Test
     public void shouldLogin() {
