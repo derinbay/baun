@@ -3,7 +3,6 @@ package com.n11.selenium.helpers;
 import com.n11.selenium.pages.Page;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.openqa.selenium.WebElement;
-
 import java.lang.reflect.Field;
 
 /**
@@ -25,6 +24,7 @@ public class PageUtils {
         try {
             element = (WebElement) field.get(page);
         } catch (Exception e) {
+            System.err.println(e);//NOSONAR
             throw new IllegalStateException("Exception on accessing field {" + elementName + "} of page");
         }
 
