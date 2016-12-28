@@ -34,4 +34,10 @@ public class FavoritesPage extends BasePage {
         }
         return this;
     }
+
+    public FavoritesPage goToFavorites() {
+        return (FavoritesPage) new FavoritesPage(driver)
+                .openMyAccountMenu()
+                .clickToMyPageOf("myFavorites");
+    }
 }

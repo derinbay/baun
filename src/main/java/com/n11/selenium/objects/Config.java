@@ -10,8 +10,8 @@ public class Config {
     public static final int WAITTIME_ELEMENTOCCURENCE = 15;
     public static final int WAITTIME_SMALL = 5;
     private static final String DEFAULT_USERNAME = "UAT BUYER DONTUSETHISBUYER";
-    private static final String DEFAULT_PASSWORD = "N11passw0rd";//NOSONAR
-    private static final String INVALID_PASSWORD = "invalid";//NOSONAR
+    private static final String DEFAULT_PASSWORD = "N11passw0rd";
+    private static final String INVALID_PASSWORD = "invalid";
 
     public static String getDefaultPassword() {
         return DEFAULT_PASSWORD;
