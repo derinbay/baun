@@ -24,10 +24,9 @@ public class PageUtils {
         try {
             element = (WebElement) field.get(page);
         } catch (Exception e) {
-            System.err.println(e);//NOSONAR
+            System.err.println(e);
             throw new IllegalStateException("Exception on accessing field {" + elementName + "} of page");
         }
-
         return element;
     }
 }

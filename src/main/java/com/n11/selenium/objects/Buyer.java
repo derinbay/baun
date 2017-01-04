@@ -2,6 +2,7 @@ package com.n11.selenium.objects;
 
 import com.n11.selenium.pages.BasePage;
 import com.n11.selenium.pages.FavoritesPage;
+import com.n11.selenium.pages.HomePage;
 import com.n11.selenium.pages.SearchResultPage;
 import org.openqa.selenium.WebDriver;
 
@@ -68,6 +69,13 @@ public class Buyer {
     public SearchResultPage search(String keyword) {
         return new BasePage(driver)
                 .search(keyword);
+    }
+
+    public Buyer login(){
+        new HomePage(driver)
+                .callLoginPage()
+                .login(this);
+        return this;
     }
 }
 
