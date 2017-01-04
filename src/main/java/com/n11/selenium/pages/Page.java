@@ -101,7 +101,7 @@ public abstract class Page {
             wait.until(ExpectedConditions.visibilityOf(element));
             return true;
         } catch (Exception ex) {
-            System.out.println("Element was not visible on page!");
+            System.err.println(ex);
             return false;
         }
     }
@@ -112,7 +112,7 @@ public abstract class Page {
             wait.until(ExpectedConditions.visibilityOfElementLocated(by));
             return true;
         } catch (Exception ex) {
-            System.out.println("Element was not visible on page!");
+            System.err.println(ex);
             return false;
         }
     }
