@@ -14,7 +14,7 @@ public class Buyer {
     private String email;
     private String password;
     private String name;
-    private WebDriver driver;
+    private final WebDriver driver;
 
     public Buyer(String email, String password, String name, WebDriver driver) {
         this.email = email;
@@ -47,7 +47,7 @@ public class Buyer {
         this.name = name;
     }
 
-    public FavoritesPage goToFavorites() {
+    private FavoritesPage goToFavorites() {
         new BasePage(driver)
                 .openMyAccountMenu()
                 .clickToMyPageOf("myFavorites");
@@ -71,7 +71,7 @@ public class Buyer {
                 .search(keyword);
     }
 
-    public Buyer login(){
+    public Buyer login() {
         new HomePage(driver)
                 .callLoginPage()
                 .login(this);

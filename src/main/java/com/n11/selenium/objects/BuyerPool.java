@@ -13,14 +13,14 @@ public class BuyerPool {
     }
 
     public static Buyer buyerForLoginTest(WebDriver driver) {
-        return new Buyer("seleniummallfront90@mailcatch.com", getDefaultPassword(), getDefaultUsername(), driver);
+        return new Buyer("seleniummallfront90@mailcatch.com", DEFAULT_PASSWORD, DEFAULT_USERNAME, driver);
     }
 
     public static Buyer buyerForFavoritesTest(WebDriver driver) {
-        return new Buyer("seleniummallfront91@mailcatch.com", getDefaultPassword(), getDefaultUsername(), driver);
+        return new Buyer("seleniummallfront91@mailcatch.com", DEFAULT_PASSWORD, DEFAULT_USERNAME, driver);
     }
 
     public static Buyer buyerForInvalidLoginTest(WebDriver driver) {
-        return new Buyer("seleniummallfront93@mailcatch.com", getInvalidPassword(), getDefaultUsername(), driver);
+        return new Buyer("seleniummallfront93@mailcatch.com", INVALID_PASSWORD, DEFAULT_USERNAME, driver);
     }
 }

@@ -65,6 +65,5 @@ target
 .cache
 .springBeans
 *.log
-*.iws
 *.ipr
 .clover

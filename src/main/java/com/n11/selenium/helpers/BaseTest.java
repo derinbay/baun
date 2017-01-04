@@ -1,4 +1,4 @@
-package com.n11.selenium;
+package com.n11.selenium.helpers;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,7 +12,7 @@ import static com.n11.selenium.objects.Config.MAIN_URL;
  */
 public class BaseTest {
 
-    WebDriver driver;
+    protected WebDriver driver;
 
     @Before
     public void startUp() {
