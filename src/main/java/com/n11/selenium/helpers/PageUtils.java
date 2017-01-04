@@ -4,11 +4,15 @@ import com.n11.selenium.pages.Page;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.openqa.selenium.WebElement;
 import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Taylan on 25/12/2016.
  */
 public class PageUtils {
+
+    private final Logger logger = Logger.getAnonymousLogger();
 
     /**
      * This method gets the page element from given string
@@ -23,8 +27,8 @@ public class PageUtils {
         WebElement element;
         try {
             element = (WebElement) field.get(page);
-        } catch (Exception e) {
-            System.err.println(e);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Field is not declared on page", ex);
             throw new IllegalStateException("Exception on accessing field {" + elementName + "} of page");
         }
         return element;

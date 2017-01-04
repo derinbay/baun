@@ -1,9 +1,9 @@
 package com.n11.selenium;
 
+import com.n11.selenium.helpers.BaseTest;
 import com.n11.selenium.objects.Buyer;
 import com.n11.selenium.pages.FavoritesPage;
 import com.n11.selenium.pages.HomePage;
-import com.n11.selenium.pages.LoginPage;
 import com.n11.selenium.pages.PaymentConfirmationPage;
 import org.junit.Test;
 
@@ -18,21 +18,19 @@ public class SmokeTest extends BaseTest {
 
     @Test
     public void shouldLogin() {
-        Buyer buyer = buyerForLoginTest(driver);
-        HomePage homePage = new HomePage(driver)
-                .callLoginPage()
-                .login(buyer);
+        Buyer buyer = buyerForLoginTest(driver)
+                .login();
 
+        HomePage homePage = new HomePage(driver);
         assertThat("Buyer is logged in!", homePage.isLoggedIn(buyer));
     }
 
     @Test
     public void shouldNotLogin() {
-        Buyer buyer = buyerForInvalidLoginTest(driver);
-        HomePage homePage = new HomePage(driver)
-                .callLoginPage()
-                .login(buyer);
+        Buyer buyer = buyerForInvalidLoginTest(driver)
+                .login();
 
+        HomePage homePage = new HomePage(driver);
         assertThat("Buyer is not logged in!", !homePage.isLoggedIn(buyer));
     }
 
@@ -41,6 +39,7 @@ public class SmokeTest extends BaseTest {
         FavoritesPage favoritesPage = buyerForFavoritesTest(driver)
                 .login()
                 .clearMyFavorites();
+
         String productName = favoritesPage.search("kalem")
                 .addToFavorites(1);
         favoritesPage.goToFavorites();
