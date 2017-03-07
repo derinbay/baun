@@ -56,7 +56,7 @@ public class SmokeTest extends BaseTest {
                 .purchase();
 
         PaymentConfirmationPage paymentConfirmationPage = new PaymentConfirmationPage(driver);
-        assertThat("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("cardNumber"));
+        assertThat("Warning is not displaying!", !paymentConfirmationPage.isWarningDisplayedFor("cardNumber"));
         assertThat("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("holderName"));
         assertThat("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("expireMonth"));
         assertThat("Warning is not displaying!", paymentConfirmationPage.isWarningDisplayedFor("securityCode"));
