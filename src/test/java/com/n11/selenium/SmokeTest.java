@@ -21,7 +21,7 @@ public class SmokeTest extends BaseTest {
         Buyer buyer = buyerForLoginTest(driver)
                 .login();
 
-        assertThat("Buyer is logged in!", new HomePage(driver).isLoggedIn(buyer));
+        assertThat("Buyer is logged in!", new HomePage(driver).isLoggedIn(buyer))
     }
 
     @Test
